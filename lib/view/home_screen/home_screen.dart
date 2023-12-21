@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/database/songs_data.dart';
 import 'package:music_player/utils/color_constants.dart';
-import 'package:music_player/utils/image_constants.dart';
-
 import 'package:music_player/utils/png_icons.dart';
 import 'package:music_player/view/home_screen/widgets/tile_builder.dart';
+import 'package:music_player/view/play_now_screen/play_now_screen.dart';
+import 'package:music_player/view/search_screen/search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -27,43 +28,62 @@ class HomeScreen extends StatelessWidget {
               color: ConstantColors.themeWhiteColor),
         ),
         actions: [
-          Image.asset(
-            IconsPng.searchPng,
-            color: ConstantColors.themeWhiteColor,
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchScreen(),
+                  ));
+            },
+            child: Image.asset(
+              IconsPng.searchPng,
+              color: ConstantColors.themeWhiteColor,
+            ),
           ),
           SizedBox(
             width: 10,
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            TileBuilder(
-              categoryTitle: "Recommended for you",
-              songTitle: "Believer",
-              artistName: "Imagine Dragons",
-              image: ConstantImage.sampleImage,
-            ),
-            TileBuilder(
-              categoryTitle: "My Playlist",
-              songTitle: "Believer",
-              artistName: "Imagine Dragons",
-              image: ConstantImage.sampleImage,
-            ),
-            TileBuilder(
-              categoryTitle: "Liked Songs",
-              songTitle: "Believer",
-              artistName: "Imagine Dragons",
-              image: ConstantImage.sampleImage,
-            ),
-            TileBuilder(
-              categoryTitle: "Trending",
-              songTitle: "Believer",
-              artistName: "Imagine Dragons",
-              image: ConstantImage.sampleImage,
-            ),
-          ],
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Recommended for you
+              Text(
+                "Recommended for you",
+                style: TextStyle(
+                    color: ConstantColors.themeWhiteColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24),
+              ),
+              kWidth5,
+              Container(
+                height: 260,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: SongsData.songs.length,
+                  itemBuilder: (context, index) => TileBuilder(
+                    songTitle: SongsData.songs[index]['song name'],
+                    artistName: SongsData.songs[index]['artist name'],
+                    image: SongsData.songs[index]['cover image'],
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaynowScreen(
+                              index: index,
+                            ),
+                          ));
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
