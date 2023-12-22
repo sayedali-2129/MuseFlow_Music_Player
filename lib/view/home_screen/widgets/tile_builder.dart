@@ -33,7 +33,7 @@ class TileBuilder extends StatelessWidget {
                 width: 190,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                        image: AssetImage(image), fit: BoxFit.cover),
+                        image: NetworkImage(image), fit: BoxFit.cover),
                     borderRadius: BorderRadius.circular(10)),
               ),
               kHeight5,
@@ -42,6 +42,8 @@ class TileBuilder extends StatelessWidget {
                   children: [
                     Text(
                       songTitle,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: TextStyle(
                           color: ConstantColors.themeWhiteColor, fontSize: 18),
                     ),

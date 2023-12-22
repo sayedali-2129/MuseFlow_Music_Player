@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/database/songs_data.dart';
+import 'package:music_player/controller/api_controller.dart';
+import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
+import 'package:provider/provider.dart';
 
 class PlaynowScreen extends StatefulWidget {
   const PlaynowScreen({
@@ -18,13 +20,19 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
   _PlaynowScreenState(this.index);
   double currentSliderValue = 20;
 
+  bool isPlaying = false;
+  String currentSong = "";
+
   @override
   Widget build(BuildContext context) {
     final kHeight10 = SizedBox(height: 10);
     final kHeight5 = SizedBox(height: 5);
     final kWidth10 = SizedBox(width: 10);
     final kWidth5 = SizedBox(width: 5);
+    PlayNowController playerController =
+        Provider.of<PlayNowController>(context);
 
+    ApiController apiController = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: ConstantColors.themeWhiteColor),
@@ -48,8 +56,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 image: DecorationImage(
-                    image: AssetImage(
-                      SongsData.songs[index]['cover image'],
+                    image: NetworkImage(
+                      apiController.musicApiResponce.music?[index].image ?? "",
                     ),
                     fit: BoxFit.cover)),
           )),
@@ -66,16 +74,18 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                       child: Column(
                         children: [
                           Text(
-                            SongsData.songs[index]['song name'],
+                            apiController
+                                    .musicApiResponce.music?[index].title ??
+                                "",
                             style: TextStyle(
                                 color: ConstantColors.themeWhiteColor,
                                 fontSize: 24),
                           ),
                           kHeight5,
                           Text(
-                            SongsData.songs[index]['artist name']
-                                .toString()
-                                .toUpperCase(),
+                            apiController
+                                    .musicApiResponce.music?[index].artist ??
+                                "".toUpperCase(),
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.fade,
                             maxLines: 2,
@@ -177,7 +187,9 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                 width: 50,
               ),
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  playerController.pauseSong();
+                },
                 child: Image.asset(
                   IconsPng.playButton,
                   color: ConstantColors.themeWhiteColor,

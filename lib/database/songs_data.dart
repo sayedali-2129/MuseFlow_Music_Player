@@ -56,7 +56,7 @@ class SongsData {
       'artist name': 'Jakes Bejoy',
       'cover image': 'assets/images/songs covers/Kalapakkaara.jpg',
       'song path':
-          'assets/songs/Kalapakkaara_From_%22King_of_Kotha%22_Jakes_Bejoy,_Shreya_Gh.m4a'
+          "assets/songs/Kalapakkaara_From_%22King_of_Kotha%22_Jakes_Bejoy,_Shreya_Gh.m4a"
     },
     {
       'song name': 'Heeriye',
