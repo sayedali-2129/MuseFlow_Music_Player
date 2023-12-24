@@ -19,9 +19,18 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
   int index;
   _PlaynowScreenState(this.index);
   double currentSliderValue = 20;
+  @override
+  void initState() {
+    super.initState();
+    iconImage = Image.asset(
+      isPlayingSong ? IconsPng.pausePng : IconsPng.playButton,
+      color: ConstantColors.themeWhiteColor,
+    );
+  }
 
-  bool isPlaying = false;
-  String currentSong = "";
+  bool isPlayingSong = true;
+
+  Image iconImage = Image.asset(IconsPng.pausePng);
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +86,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                             apiController
                                     .musicApiResponce.music?[index].title ??
                                 "",
+                            textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ConstantColors.themeWhiteColor,
                                 fontSize: 24),
@@ -153,7 +163,10 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                   style: TextStyle(
                       fontSize: 14, color: ConstantColors.lightblueColor),
                 ),
-                Text("04.00",
+                Text(
+                    apiController.musicApiResponce.music?[index].duration
+                            .toString() ??
+                        "",
                     style: TextStyle(
                         fontSize: 14, color: ConstantColors.lightblueColor)),
               ],
@@ -184,24 +197,36 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                 ),
               ),
               SizedBox(
-                width: 50,
+                width: 60,
+              ),
+              GestureDetector(
+                  onTap: () async {
+                    if (playerController.isPlaying == true) {
+                      playerController.pauseSong();
+                      setState(() {
+                        iconImage = Image.asset(
+                          IconsPng.playButton,
+                          color: ConstantColors.themeWhiteColor,
+                        );
+                      });
+                    } else if (playerController.isPlaying == false) {
+                      playerController.resumeSong();
+                      setState(() {
+                        iconImage = Image.asset(
+                          IconsPng.pausePng,
+                          color: ConstantColors.themeWhiteColor,
+                        );
+                      });
+                    }
+                  },
+                  child: iconImage),
+              SizedBox(
+                width: 60,
               ),
               GestureDetector(
                 onTap: () {
-                  playerController.pauseSong();
+                  playerController.nextSong();
                 },
-                child: Image.asset(
-                  IconsPng.playButton,
-                  color: ConstantColors.themeWhiteColor,
-                  // height: 50,
-                  // width: 50,
-                ),
-              ),
-              SizedBox(
-                width: 50,
-              ),
-              GestureDetector(
-                onTap: () {},
                 child: Image.asset(
                   IconsPng.nextForwardPng,
                   color: ConstantColors.themeWhiteColor,

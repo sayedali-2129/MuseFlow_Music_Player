@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/controller/api_controller.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
-import 'package:music_player/view/bottom_navigationbar/bottom_navigation.dart';
+import 'package:music_player/view/authentication/login_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -18,14 +18,14 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PlayNowController()),
         ChangeNotifierProvider(
           create: (context) => ApiController(),
-        )
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: "Gilroy",
         ),
-        home: BottomNavigationWidget(),
+        home: LoginScreen(),
       ),
     );
   }
