@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "459007089580",
+    "project_id": "museflow-music-player",
+    "storage_bucket": "museflow-music-player.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459007089580:android:b8e7cf1344b4c41a863809",
+        "android_client_info": {
+          "package_name": "com.example.music_player"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoPcKOFidHVxfkgxyasFwa0RLL6Gx-6YY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

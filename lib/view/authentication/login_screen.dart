@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/view/authentication/registration_screen.dart';
+import 'package:music_player/view/home_screen/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
     });
   }
 
+  final loginKey = GlobalKey<FormState>();
+
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   @override
@@ -31,26 +35,26 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Image.asset(
-                  ConstantImage.mainLogoPng,
-                  height: 200,
-                  width: 200,
-                ),
-                Text(
-                  "LogIn",
-                  style: TextStyle(
-                      color: ConstantColors.themeWhiteColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24),
-                ),
-                kHeight10,
-                SizedBox(
-                  height: 50,
-                  child: GestureDetector(
+            child: Form(
+              key: loginKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    ConstantImage.mainLogoPng,
+                    height: 200,
+                    width: 200,
+                  ),
+                  Text(
+                    "LogIn",
+                    style: TextStyle(
+                        color: ConstantColors.themeWhiteColor,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24),
+                  ),
+                  kHeight10,
+                  GestureDetector(
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
@@ -67,13 +71,17 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintStyle:
                               TextStyle(color: ConstantColors.themeWhiteColor),
                           border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (emailController.text.isEmpty) {
+                          return "Enter Email";
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                   ),
-                ),
-                kHeight10,
-                SizedBox(
-                  height: 50,
-                  child: GestureDetector(
+                  kHeight10,
+                  GestureDetector(
                     onTap: () {
                       FocusManager.instance.primaryFocus?.unfocus();
                     },
@@ -98,60 +106,94 @@ class _LoginScreenState extends State<LoginScreen> {
                           hintStyle:
                               TextStyle(color: ConstantColors.themeWhiteColor),
                           border: OutlineInputBorder()),
+                      validator: (value) {
+                        if (passwordController.text.isEmpty) {
+                          return "Enter password";
+                        } else if (passwordController.text.length < 6) {
+                          return 'password must be min 6 characters';
+                        } else {
+                          return null;
+                        }
+                      },
                     ),
                   ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    TextButton(
-                        onPressed: () {},
-                        child: Text(
-                          "Forgot password?",
-                          style: TextStyle(
-                              color: ConstantColors.themeWhiteColor,
-                              decoration: TextDecoration.underline,
-                              decorationColor: ConstantColors.themeWhiteColor),
-                        ))
-                  ],
-                ),
-                kHeight10,
-                GestureDetector(
-                  onTap: () {},
-                  child: Container(
-                    height: 40,
-                    width: 90,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: LinearGradient(colors: [
-                          ConstantColors.containerGradient1,
-                          ConstantColors.containerGradient2,
-                          ConstantColors.containerGradient13
-                        ])),
-                    child: Center(
-                        child: Text(
-                      "Login",
-                      style: TextStyle(
-                          color: ConstantColors.themeWhiteColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15),
-                    )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Forgot password?",
+                            style: TextStyle(
+                                color: ConstantColors.themeWhiteColor,
+                                decoration: TextDecoration.underline,
+                                decorationColor:
+                                    ConstantColors.themeWhiteColor),
+                          ))
+                    ],
                   ),
-                ),
-                kHeight10,
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => RegistrationScreen(),
-                          ));
+                  kHeight10,
+                  GestureDetector(
+                    onTap: () async {
+                      if (loginKey.currentState!.validate()) {
+                        loginKey.currentState!.save();
+
+                        try {
+                          final credential = await FirebaseAuth.instance
+                              .signInWithEmailAndPassword(
+                                  email: emailController.text,
+                                  password: passwordController.text);
+                          if (credential.user?.uid != null) {
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ));
+                          }
+                        } on FirebaseAuthException catch (e) {
+                          if (e.code == 'user-not-found') {
+                            print('no user found');
+                          } else if (e.code == 'wrong-password') {
+                            print('wrong password provided');
+                          }
+                        }
+                      }
                     },
-                    child: Text(
-                      "Don't have an Account? Click here to register",
-                      style: TextStyle(color: ConstantColors.themeWhiteColor),
-                    ))
-              ],
+                    child: Container(
+                      height: 40,
+                      width: 90,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          gradient: LinearGradient(colors: [
+                            ConstantColors.containerGradient1,
+                            ConstantColors.containerGradient2,
+                            ConstantColors.containerGradient13
+                          ])),
+                      child: Center(
+                          child: Text(
+                        "Login",
+                        style: TextStyle(
+                            color: ConstantColors.themeWhiteColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15),
+                      )),
+                    ),
+                  ),
+                  kHeight10,
+                  TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegistrationScreen(),
+                            ));
+                      },
+                      child: Text(
+                        "Don't have an Account? Click here to register",
+                        style: TextStyle(color: ConstantColors.themeWhiteColor),
+                      ))
+                ],
+              ),
             ),
           ),
         ),
