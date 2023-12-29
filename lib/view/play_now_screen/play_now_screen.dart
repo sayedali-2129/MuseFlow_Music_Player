@@ -37,7 +37,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
     final kHeight10 = SizedBox(height: 10);
     final kHeight5 = SizedBox(height: 5);
     final kWidth10 = SizedBox(width: 10);
-    final kWidth5 = SizedBox(width: 5);
+
     PlayNowController playerController =
         Provider.of<PlayNowController>(context);
 
@@ -172,6 +172,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               ],
             ),
           ),
+          // Slider
           Slider(
             value: currentSliderValue,
             max: 100,
@@ -202,7 +203,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               GestureDetector(
                   onTap: () async {
                     if (playerController.isPlaying == true) {
-                      playerController.pauseSong();
+                      Provider.of<PlayNowController>(context, listen: false)
+                          .pauseSong();
                       setState(() {
                         iconImage = Image.asset(
                           IconsPng.playButton,
@@ -210,7 +212,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                         );
                       });
                     } else if (playerController.isPlaying == false) {
-                      playerController.resumeSong();
+                      Provider.of<PlayNowController>(context, listen: false)
+                          .resumeSong();
                       setState(() {
                         iconImage = Image.asset(
                           IconsPng.pausePng,
@@ -225,7 +228,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  playerController.nextSong();
+                  // playerController.nextSong();
+                  print(index);
                 },
                 child: Image.asset(
                   IconsPng.nextForwardPng,

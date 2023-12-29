@@ -17,6 +17,7 @@ class ApiController with ChangeNotifier {
     if (response.statusCode == 200) {
       decodedData = jsonDecode(response.body);
       musicApiResponce = MusicApiModel.fromJson(decodedData);
+
       notifyListeners();
     } else {
       print("API failed");

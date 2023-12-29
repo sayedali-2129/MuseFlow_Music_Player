@@ -97,8 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     image: apiController.musicApiResponce.music?[index].image ??
                         "",
                     onTap: () {
-                      playerController.playSong(
-                          apiController.musicApiResponce.music?[index].source ??
+                      Provider.of<PlayNowController>(context, listen: false)
+                          .playSong(apiController
+                                  .musicApiResponce.music?[index].source ??
                               "");
                       Navigator.push(
                           context,
@@ -110,7 +111,46 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 ),
-              )
+              ),
+              // Trending
+              Text(
+                "Trending",
+                style: TextStyle(
+                    color: ConstantColors.themeWhiteColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24),
+              ),
+              kWidth5,
+              Container(
+                height: 260,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: apiController.musicApiResponce.music?.length ?? 0,
+                  itemBuilder: (context, index) => TileBuilder(
+                    songTitle:
+                        apiController.musicApiResponce.music?[index].title ??
+                            "",
+                    artistName:
+                        apiController.musicApiResponce.music?[index].artist ??
+                            "",
+                    image: apiController.musicApiResponce.music?[index].image ??
+                        "",
+                    onTap: () {
+                      Provider.of<PlayNowController>(context, listen: false)
+                          .playSong(apiController
+                                  .musicApiResponce.music?[index].source ??
+                              "");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PlaynowScreen(
+                              index: index,
+                            ),
+                          ));
+                    },
+                  ),
+                ),
+              ),
             ],
           ),
         ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:music_player/controller/api_controller.dart';
 
 class PlayNowController with ChangeNotifier {
   late AudioPlayer audioPlayer;
@@ -7,13 +8,16 @@ class PlayNowController with ChangeNotifier {
     audioPlayer = AudioPlayer();
   }
   bool isPlaying = true;
+  ApiController apiController = ApiController();
+
+  int currentSongIndex = 0;
 
   Duration duration = Duration();
   Duration position = Duration();
 
-  Future<void> playSong(String songPath) async {
+  Future<void> playSong(String songUrl) async {
     try {
-      await audioPlayer.setUrl(songPath);
+      await audioPlayer.setUrl(songUrl);
       await audioPlayer.play();
 
       notifyListeners();
@@ -46,7 +50,12 @@ class PlayNowController with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> nextSong() async {
-    await audioPlayer.seekToNext();
+  // Future<void> nextSong() async {
+  //   currentSongIndex =
+  //       (currentSongIndex + 1) % apiController.musicApiResponce.music!.length;
+  //   await playSong();
+  // }
+  void disposePlayer() {
+    audioPlayer.dispose();
   }
 }
