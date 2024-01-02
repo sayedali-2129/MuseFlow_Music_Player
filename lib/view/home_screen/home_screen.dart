@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:music_player/controller/api_controller.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
+import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
-import 'package:music_player/view/home_screen/widgets/tile_builder.dart';
+import 'package:music_player/view/home_screen/widgets/song_list_tile.dart';
 import 'package:music_player/view/play_now_screen/play_now_screen.dart';
 import 'package:music_player/view/search_screen/search_screen.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -18,17 +21,12 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
-    getData();
     super.initState();
-  }
-
-  Future<void> getData() async {
-    Provider.of<ApiController>(context, listen: false).fetchData();
   }
 
   @override
   Widget build(BuildContext context) {
-    // final kHeight10 = SizedBox(height: 10);
+    final kHeight10 = SizedBox(height: 10);
     // final kHeight5 = SizedBox(height: 5);
     // final kWidth10 = SizedBox(width: 10);
     final kWidth5 = SizedBox(width: 5);
@@ -73,84 +71,63 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Recommended for you
               Text(
-                "Recommended for you",
+                "My Songs",
                 style: TextStyle(
                     color: ConstantColors.themeWhiteColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24),
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
               ),
-              kWidth5,
-              Container(
-                height: 260,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: apiController.musicApiResponce.music?.length ?? 0,
-                  itemBuilder: (context, index) => TileBuilder(
-                    songTitle:
-                        apiController.musicApiResponce.music?[index].title ??
-                            "",
-                    artistName:
-                        apiController.musicApiResponce.music?[index].artist ??
-                            "",
-                    image: apiController.musicApiResponce.music?[index].image ??
-                        "",
-                    onTap: () {
-                      Provider.of<PlayNowController>(context, listen: false)
-                          .playSong(apiController
-                                  .musicApiResponce.music?[index].source ??
-                              "");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlaynowScreen(
-                              index: index,
-                            ),
-                          ));
-                    },
-                  ),
-                ),
-              ),
-              // Trending
-              Text(
-                "Trending",
-                style: TextStyle(
-                    color: ConstantColors.themeWhiteColor,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24),
-              ),
-              kWidth5,
-              Container(
-                height: 260,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: apiController.musicApiResponce.music?.length ?? 0,
-                  itemBuilder: (context, index) => TileBuilder(
-                    songTitle:
-                        apiController.musicApiResponce.music?[index].title ??
-                            "",
-                    artistName:
-                        apiController.musicApiResponce.music?[index].artist ??
-                            "",
-                    image: apiController.musicApiResponce.music?[index].image ??
-                        "",
-                    onTap: () {
-                      Provider.of<PlayNowController>(context, listen: false)
-                          .playSong(apiController
-                                  .musicApiResponce.music?[index].source ??
-                              "");
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PlaynowScreen(
-                              index: index,
-                            ),
-                          ));
-                    },
-                  ),
-                ),
-              ),
+              kHeight10,
+              FutureBuilder<List<SongModel>>(
+                future: playerController.audioQuery.querySongs(
+                    sortType: null,
+                    orderType: OrderType.ASC_OR_SMALLER,
+                    uriType: UriType.EXTERNAL,
+                    ignoreCase: true),
+                builder: (context, items) {
+                  if (items.data == null) {
+                    return Center(
+                      child: LottieBuilder.asset(
+                          ConstantImage.loadingAnimationSplash),
+                    );
+                  }
+                  if (items.data!.isEmpty) {
+                    return Text("No Songs Found");
+                  }
+                  return ListView.separated(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemCount: items.data!.length,
+                    itemBuilder: (context, index) => GestureDetector(
+                      onTap: () {
+                        playerController.playSong(items.data![index].uri ?? "");
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  PlaynowScreen(songModel: items.data![index]),
+                            ));
+                      },
+                      child: SongListTile(
+                        songTitle: items.data![index].displayNameWOExt,
+                        artist: items.data![index].artist ?? "",
+                        image: QueryArtworkWidget(
+                          id: items.data![index].id,
+                          type: ArtworkType.AUDIO,
+                          keepOldArtwork: true,
+                          artworkBorder: BorderRadius.circular(10),
+                          nullArtworkWidget:
+                              Image.asset(ConstantImage.mainLogoPng),
+                        ),
+                      ),
+                    ),
+                    separatorBuilder: (context, index) => SizedBox(
+                      height: 10,
+                    ),
+                  );
+                },
+              )
             ],
           ),
         ),

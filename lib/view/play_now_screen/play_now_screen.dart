@@ -1,31 +1,38 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:music_player/controller/api_controller.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
+import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
+import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
 class PlaynowScreen extends StatefulWidget {
   const PlaynowScreen({
-    required this.index,
     super.key,
+    required this.songModel,
   });
-  final int index;
+  final SongModel songModel;
+
   @override
-  State<PlaynowScreen> createState() => _PlaynowScreenState(index);
+  State<PlaynowScreen> createState() => _PlaynowScreenState();
 }
 
 class _PlaynowScreenState extends State<PlaynowScreen> {
-  int index;
-  _PlaynowScreenState(this.index);
   double currentSliderValue = 20;
   @override
   void initState() {
+    getData();
     super.initState();
     iconImage = Image.asset(
       isPlayingSong ? IconsPng.pausePng : IconsPng.playButton,
       color: ConstantColors.themeWhiteColor,
     );
+  }
+
+  Future<void> getData() async {
+    Provider.of<PlayNowController>(context, listen: false).durationControl();
   }
 
   bool isPlayingSong = true;
@@ -41,7 +48,6 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
     PlayNowController playerController =
         Provider.of<PlayNowController>(context);
 
-    ApiController apiController = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: ConstantColors.themeWhiteColor),
@@ -62,13 +68,14 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               child: Container(
             height: 263,
             width: 263,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: DecorationImage(
-                    image: NetworkImage(
-                      apiController.musicApiResponce.music?[index].image ?? "",
-                    ),
-                    fit: BoxFit.cover)),
+            child: QueryArtworkWidget(
+              id: widget.songModel.id,
+              artworkQuality: FilterQuality.high,
+              type: ArtworkType.AUDIO,
+              keepOldArtwork: true,
+              artworkBorder: BorderRadius.circular(10),
+              nullArtworkWidget: Image.asset(ConstantImage.mainLogoPng),
+            ),
           )),
           kHeight10,
           kHeight10,
@@ -83,9 +90,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                       child: Column(
                         children: [
                           Text(
-                            apiController
-                                    .musicApiResponce.music?[index].title ??
-                                "",
+                            widget.songModel.displayNameWOExt,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ConstantColors.themeWhiteColor,
@@ -93,9 +98,9 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                           ),
                           kHeight5,
                           Text(
-                            apiController
-                                    .musicApiResponce.music?[index].artist ??
-                                "".toUpperCase(),
+                            widget.songModel.artist == "<unknown>"
+                                ? "Unknown Artist"
+                                : widget.songModel.artist ?? "",
                             textAlign: TextAlign.center,
                             overflow: TextOverflow.fade,
                             maxLines: 2,
@@ -159,14 +164,11 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "00.50",
+                  playerController.position.toString().split(".")[0],
                   style: TextStyle(
                       fontSize: 14, color: ConstantColors.lightblueColor),
                 ),
-                Text(
-                    apiController.musicApiResponce.music?[index].duration
-                            .toString() ??
-                        "",
+                Text(playerController.duration.toString().split(".")[0],
                     style: TextStyle(
                         fontSize: 14, color: ConstantColors.lightblueColor)),
               ],
@@ -174,14 +176,16 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
           ),
           // Slider
           Slider(
-            value: currentSliderValue,
-            max: 100,
-            min: 0,
+            value: playerController.position.inSeconds.toDouble(),
+            max: playerController.duration.inSeconds.toDouble(),
+            min: Duration(milliseconds: 0).inSeconds.toDouble(),
             activeColor: ConstantColors.themeWhiteColor,
             inactiveColor: Colors.grey,
             onChanged: (value) {
-              currentSliderValue = value;
-              setState(() {});
+              setState(() {
+                playerController.changeToSeconds(value.toInt());
+                value = value;
+              });
             },
           ),
           SizedBox(
@@ -229,7 +233,6 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               GestureDetector(
                 onTap: () {
                   // playerController.nextSong();
-                  print(index);
                 },
                 child: Image.asset(
                   IconsPng.nextForwardPng,

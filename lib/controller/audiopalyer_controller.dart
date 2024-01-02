@@ -1,42 +1,45 @@
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:music_player/controller/api_controller.dart';
+import 'package:on_audio_query/on_audio_query.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class PlayNowController with ChangeNotifier {
-  late AudioPlayer audioPlayer;
-  PlayNowController() {
-    audioPlayer = AudioPlayer();
-  }
-  bool isPlaying = true;
-  ApiController apiController = ApiController();
+  AudioPlayer audioPlayer = AudioPlayer();
 
-  int currentSongIndex = 0;
+  final audioQuery = OnAudioQuery();
+
+  bool isPlaying = false;
 
   Duration duration = Duration();
   Duration position = Duration();
 
-  Future<void> playSong(String songUrl) async {
-    try {
-      await audioPlayer.setUrl(songUrl);
-      await audioPlayer.play();
-
-      notifyListeners();
-    } catch (e) {
-      print('error loading audio: $e');
+  checkPermission() async {
+    var status = await Permission.storage.request();
+    if (status.isGranted) {
+    } else {
+      checkPermission();
     }
   }
 
-  // Future<void> playAndPauseButton() async {
-  //   if (isPlaying == true) {
-  //     await audioPlayer.pause();
-  //     isPlaying = false;
-  //     notifyListeners();
-  //   } else {
-  //     await audioPlayer.play();
-  //     isPlaying = true;
-  //     notifyListeners();
-  //   }
-  // }
+  void dispose() {
+    audioPlayer.dispose();
+    super.dispose();
+  }
+
+  Future<void> playSong(String? uri) async {
+    try {
+      await audioPlayer.setAudioSource(AudioSource.uri(
+        Uri.parse(uri!),
+      ));
+      notifyListeners();
+      await audioPlayer.play();
+      durationControl();
+
+      notifyListeners();
+    } catch (e) {
+      print("Error Parsing Song:$e");
+    }
+  }
 
   Future<void> pauseSong() async {
     await audioPlayer.pause();
@@ -50,12 +53,20 @@ class PlayNowController with ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<void> nextSong() async {
-  //   currentSongIndex =
-  //       (currentSongIndex + 1) % apiController.musicApiResponce.music!.length;
-  //   await playSong();
-  // }
-  void disposePlayer() {
-    audioPlayer.dispose();
+  durationControl() {
+    audioPlayer.durationStream.listen((d) {
+      notifyListeners();
+      duration = d!;
+    });
+
+    audioPlayer.positionStream.listen((p) {
+      notifyListeners();
+      position = p;
+    });
+  }
+
+  void changeToSeconds(int seconds) {
+    Duration durationSeek = Duration(seconds: seconds);
+    audioPlayer.seek(durationSeek);
   }
 }
