@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
+import 'package:music_player/controller/search_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/view/bottom_navigationbar/bottom_navigation.dart';
@@ -32,6 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> getData() async {
     Provider.of<PlayNowController>(context, listen: false).fetchDeviceSongs();
+    Provider.of<SearchControllerProvider>(context, listen: false)
+        .fetchDeviceSongs();
   }
 
   @override

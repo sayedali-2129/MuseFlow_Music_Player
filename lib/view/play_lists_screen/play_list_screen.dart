@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
-import 'package:music_player/utils/image_constants.dart';
+import 'package:music_player/utils/png_icons.dart';
 
-class LikedSongsScreen extends StatelessWidget {
-  const LikedSongsScreen({super.key});
+class PlayListScreen extends StatelessWidget {
+  const PlayListScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class LikedSongsScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: ConstantColors.themeBlueColor,
       appBar: AppBar(
-        title: Text("Liked Songs"),
+        title: Text("Your Playlists"),
         titleTextStyle: TextStyle(
             fontFamily: "Gilroy",
             fontWeight: FontWeight.bold,
@@ -23,7 +23,7 @@ class LikedSongsScreen extends StatelessWidget {
       body: GridView.builder(
         itemCount: 5,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 2, mainAxisExtent: 230),
+            crossAxisCount: 3, mainAxisExtent: 200),
         itemBuilder: (context, index) => Padding(
           padding: const EdgeInsets.all(8.0),
           child: Container(
@@ -32,24 +32,36 @@ class LikedSongsScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
-                  height: 160,
+                  height: 120,
                   width: 170,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      image: DecorationImage(
-                          image: AssetImage(ConstantImage.sampleImage),
-                          fit: BoxFit.cover)),
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(color: ConstantColors.themeWhiteColor),
+                    image: DecorationImage(
+                        image: AssetImage(
+                          IconsPng.playLsitPng,
+                        ),
+                        scale: 10,
+                        invertColors: true),
+                  ),
+                  // child: Icon(
+                  //   Icons.music_note,
+                  //   color: ConstantColors.themeWhiteColor,
+                  //   size: 80,
+                  // ),
                 ),
                 kHeight5,
                 Column(
                   children: [
                     Text(
-                      "Song Name",
+                      "Playlist Name",
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
                       style: TextStyle(
-                          color: ConstantColors.themeWhiteColor, fontSize: 18),
+                          color: ConstantColors.themeWhiteColor, fontSize: 15),
                     ),
                     Text(
-                      "Artist Name",
+                      "Songs count",
                       style: TextStyle(
                           color: ConstantColors.themeWhiteColor, fontSize: 14),
                     ),

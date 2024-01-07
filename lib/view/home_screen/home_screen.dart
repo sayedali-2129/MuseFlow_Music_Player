@@ -17,15 +17,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  @override
-  void initState() {
-    // fetchData();
-    super.initState();
-  }
-
-  // Future<void> fetchData() async {
-  //   Provider.of<PlayNowController>(context, listen: false).fetchDeviceSongs();
-  // }
+ 
 
   @override
   Widget build(BuildContext context) {

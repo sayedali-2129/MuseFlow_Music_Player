@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
 import 'package:music_player/view/home_screen/home_screen.dart';
-import 'package:music_player/view/liked_songs_screen/likes_songs_screen.dart';
+import 'package:music_player/view/play_lists_screen/play_list_screen.dart';
 import 'package:music_player/view/profile_screen/profile_screen.dart';
 
 class BottomNavigationWidget extends StatefulWidget {
@@ -14,7 +14,7 @@ class BottomNavigationWidget extends StatefulWidget {
 
 class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
   int currentPageIndex = 0;
-  final pages = [HomeScreen(), LikedSongsScreen(), ProfileScreen()];
+  final pages = [HomeScreen(), PlayListScreen(), ProfileScreen()];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +43,7 @@ class _BottomNavigationWidgetState extends State<BottomNavigationWidget> {
                 label: ""),
             BottomNavigationBarItem(
                 icon: Image.asset(
-                  IconsPng.heartPng,
+                  IconsPng.playLsitPng,
                   height: 25,
                   width: 25,
                   color: currentPageIndex == 1

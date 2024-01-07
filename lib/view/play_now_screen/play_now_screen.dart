@@ -141,11 +141,30 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset(
-                  IconsPng.volumePng,
-                  color: ConstantColors.unSelectedIndex,
-                  height: 27,
-                  width: 27,
+                Row(
+                  children: [
+                    Image.asset(
+                      IconsPng.volumePng,
+                      color: ConstantColors.unSelectedIndex,
+                      height: 27,
+                      width: 27,
+                    ),
+                    kWidth10,
+                    // Image.asset(
+                    //   IconsPng.playLsitPng,
+                    //   color: ConstantColors.unSelectedIndex,
+                    //   height: 20,
+                    //   width: 20,
+                    // ),
+                    GestureDetector(
+                      onTap: () {},
+                      child: Icon(
+                        Icons.playlist_add,
+                        color: ConstantColors.unSelectedIndex,
+                        size: 27,
+                      ),
+                    )
+                  ],
                 ),
                 Row(
                   children: [
@@ -193,25 +212,12 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
           Slider(
             value: playerController.position.inSeconds.toDouble(),
             max: playerController.duration.inSeconds.toDouble(),
-            min: Duration(milliseconds: 0).inSeconds.toDouble(),
+            min: 0.0, // Adjusted to be a double value
             activeColor: ConstantColors.themeWhiteColor,
             inactiveColor: Colors.grey,
             onChanged: (value) {
               setState(() {
                 playerController.changeToSeconds(value.toInt());
-                value = value;
-              });
-            },
-            onChangeStart: (value) {
-              setState(() {
-                if (value < value) {
-                  Provider.of<PlayNowController>(context, listen: false)
-                      .nextSong(
-                          playerController.playIndex, widget.songData.length);
-                  Provider.of<PlayNowController>(context, listen: false)
-                      .playSong(widget.songData[playerController.nextIndex].url,
-                          playerController.nextIndex);
-                }
               });
             },
           ),
