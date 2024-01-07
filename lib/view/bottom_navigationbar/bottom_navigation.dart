@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
-import 'package:music_player/utils/custom_icons.dart';
 import 'package:music_player/utils/png_icons.dart';
 import 'package:music_player/view/home_screen/home_screen.dart';
 import 'package:music_player/view/liked_songs_screen/likes_songs_screen.dart';

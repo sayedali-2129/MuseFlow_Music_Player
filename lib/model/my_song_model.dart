@@ -6,7 +6,7 @@ class MySongsModel {
   String url;
   int? duration;
   bool? favorites;
-  String? data;
+  String data;
 
   MySongsModel({
     required this.id,
@@ -16,6 +16,6 @@ class MySongsModel {
     required this.url,
     required this.duration,
     this.favorites = false,
-    this.data = "",
+    required this.data,
   });
 }

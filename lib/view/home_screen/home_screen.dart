@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:music_player/controller/api_controller.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
@@ -21,8 +19,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
+    // fetchData();
     super.initState();
   }
+
+  // Future<void> fetchData() async {
+  //   Provider.of<PlayNowController>(context, listen: false).fetchDeviceSongs();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +36,6 @@ class _HomeScreenState extends State<HomeScreen> {
     PlayNowController playerController =
         Provider.of<PlayNowController>(context);
 
-    ApiController apiController = Provider.of(context);
     return Scaffold(
       backgroundColor: ConstantColors.themeBlueColor,
       appBar: AppBar(
@@ -68,68 +70,48 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "My Songs",
-                style: TextStyle(
-                    color: ConstantColors.themeWhiteColor,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              kHeight10,
-              FutureBuilder<List<SongModel>>(
-                future: playerController.audioQuery.querySongs(
-                    sortType: null,
-                    orderType: OrderType.ASC_OR_SMALLER,
-                    uriType: UriType.EXTERNAL,
-                    ignoreCase: true),
-                builder: (context, items) {
-                  if (items.data == null) {
-                    return Center(
-                      child: LottieBuilder.asset(
-                          ConstantImage.loadingAnimationSplash),
-                    );
-                  }
-                  if (items.data!.isEmpty) {
-                    return Text("No Songs Found");
-                  }
-                  return ListView.separated(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: items.data!.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                      onTap: () {
-                        playerController.playSong(items.data![index].uri ?? "");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  PlaynowScreen(songModel: items.data![index]),
-                            ));
-                      },
-                      child: SongListTile(
-                        songTitle: items.data![index].displayNameWOExt,
-                        artist: items.data![index].artist ?? "",
-                        image: QueryArtworkWidget(
-                          id: items.data![index].id,
-                          type: ArtworkType.AUDIO,
-                          keepOldArtwork: true,
-                          artworkBorder: BorderRadius.circular(10),
-                          nullArtworkWidget:
-                              Image.asset(ConstantImage.mainLogoPng),
-                        ),
-                      ),
-                    ),
-                    separatorBuilder: (context, index) => SizedBox(
-                      height: 10,
-                    ),
-                  );
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              "My Songs",
+              style: TextStyle(
+                  color: ConstantColors.themeWhiteColor,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
+            ),
+            kHeight10,
+            ListView.separated(
+              physics: NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              itemCount: playerController.allSongsList.length,
+              itemBuilder: (context, index) => GestureDetector(
+                onTap: () {
+                  playerController.playSong(
+                      playerController.allSongsList[index].url, index);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PlaynowScreen(
+                            songData: playerController.allSongsList),
+                      ));
                 },
-              )
-            ],
-          ),
+                child: SongListTile(
+                  songTitle: playerController.allSongsList[index].displayName,
+                  artist: playerController.allSongsList[index].artist,
+                  image: QueryArtworkWidget(
+                    id: playerController.allSongsList[index].id,
+                    type: ArtworkType.AUDIO,
+                    keepOldArtwork: true,
+                    artworkBorder: BorderRadius.circular(10),
+                    nullArtworkWidget: Image.asset(ConstantImage.mainLogoPng),
+                  ),
+                ),
+              ),
+              separatorBuilder: (context, index) => SizedBox(
+                height: 10,
+              ),
+            )
+          ]),
         ),
       ),
     );

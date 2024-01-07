@@ -5,7 +5,7 @@ import 'package:lottie/lottie.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
-import 'package:music_player/view/home_screen/home_screen.dart';
+import 'package:music_player/view/bottom_navigationbar/bottom_navigation.dart';
 import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -22,7 +22,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => HomeScreen(),
+            builder: (context) => BottomNavigationWidget(),
           ),
           (route) => false);
     });
@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> getData() async {
-    Provider.of<PlayNowController>(context, listen: false).checkPermission();
+    Provider.of<PlayNowController>(context, listen: false).fetchDeviceSongs();
   }
 
   @override

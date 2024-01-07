@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
+import 'package:music_player/model/my_song_model.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
@@ -11,9 +12,9 @@ import 'package:provider/provider.dart';
 class PlaynowScreen extends StatefulWidget {
   const PlaynowScreen({
     super.key,
-    required this.songModel,
+    required this.songData,
   });
-  final SongModel songModel;
+  final List<MySongsModel> songData;
 
   @override
   State<PlaynowScreen> createState() => _PlaynowScreenState();
@@ -24,6 +25,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
   @override
   void initState() {
     getData();
+
     super.initState();
     iconImage = Image.asset(
       isPlayingSong ? IconsPng.pausePng : IconsPng.playButton,
@@ -33,6 +35,10 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
 
   Future<void> getData() async {
     Provider.of<PlayNowController>(context, listen: false).durationControl();
+    // Provider.of<PlayNowController>(context, listen: false).fetchDeviceSongs();
+    // Provider.of<PlayNowController>(context, listen: false).playSong(
+    //     widget.songData[Provider.of<PlayNowController>(context).playIndex].url,
+    //     Provider.of<PlayNowController>(context).playIndex);
   }
 
   bool isPlayingSong = true;
@@ -69,7 +75,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
             height: 263,
             width: 263,
             child: QueryArtworkWidget(
-              id: widget.songModel.id,
+              id: widget.songData[playerController.playIndex].id,
               artworkQuality: FilterQuality.high,
               type: ArtworkType.AUDIO,
               keepOldArtwork: true,
@@ -90,7 +96,10 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                       child: Column(
                         children: [
                           Text(
-                            widget.songModel.displayNameWOExt,
+                            widget.songData[playerController.playIndex]
+                                .displayName,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: ConstantColors.themeWhiteColor,
@@ -98,12 +107,15 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                           ),
                           kHeight5,
                           Text(
-                            widget.songModel.artist == "<unknown>"
+                            widget.songData[playerController.playIndex]
+                                        .displayName ==
+                                    "<unknown>"
                                 ? "Unknown Artist"
-                                : widget.songModel.artist ?? "",
+                                : widget.songData[playerController.playIndex]
+                                    .displayName,
                             textAlign: TextAlign.center,
-                            overflow: TextOverflow.fade,
-                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
                             style: TextStyle(
                               color: ConstantColors.lightblueColor,
                               fontSize: 16,
@@ -144,11 +156,14 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                       width: 27,
                     ),
                     kWidth10,
-                    Image.asset(
-                      IconsPng.shufflePng,
-                      color: ConstantColors.unSelectedIndex,
-                      height: 27,
-                      width: 27,
+                    GestureDetector(
+                      onTap: () {},
+                      child: Image.asset(
+                        IconsPng.shufflePng,
+                        color: ConstantColors.unSelectedIndex,
+                        height: 27,
+                        width: 27,
+                      ),
                     )
                   ],
                 )
@@ -187,6 +202,18 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                 value = value;
               });
             },
+            onChangeStart: (value) {
+              setState(() {
+                if (value < value) {
+                  Provider.of<PlayNowController>(context, listen: false)
+                      .nextSong(
+                          playerController.playIndex, widget.songData.length);
+                  Provider.of<PlayNowController>(context, listen: false)
+                      .playSong(widget.songData[playerController.nextIndex].url,
+                          playerController.nextIndex);
+                }
+              });
+            },
           ),
           SizedBox(
             height: 30,
@@ -195,7 +222,14 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               GestureDetector(
-                onTap: () {},
+                onTap: () {
+                  int prevIndex = playerController.playIndex - 1;
+                  if (prevIndex < 0) {
+                    prevIndex = widget.songData.length - 1;
+                  }
+                  Provider.of<PlayNowController>(context, listen: false)
+                      .playSong(widget.songData[prevIndex].url, prevIndex);
+                },
                 child: Image.asset(
                   IconsPng.nextBackwardPng,
                   color: ConstantColors.themeWhiteColor,
@@ -232,7 +266,18 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               ),
               GestureDetector(
                 onTap: () {
-                  // playerController.nextSong();
+                  // int nextIndex = playerController.playIndex + 1;
+                  // if (nextIndex >= widget.songData.length) {
+                  //   nextIndex = 0;
+                  // }
+                  // Provider.of<PlayNowController>(context, listen: false)
+                  //     .playSong(widget.songData[nextIndex].url, nextIndex);
+                  Provider.of<PlayNowController>(context, listen: false)
+                      .nextSong(
+                          playerController.playIndex, widget.songData.length);
+                  Provider.of<PlayNowController>(context, listen: false)
+                      .playSong(widget.songData[playerController.nextIndex].url,
+                          playerController.nextIndex);
                 },
                 child: Image.asset(
                   IconsPng.nextForwardPng,
