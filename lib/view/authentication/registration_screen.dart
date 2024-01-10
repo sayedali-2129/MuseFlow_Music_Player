@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
+import 'package:music_player/view/authentication/error_message.dart';
 import 'package:music_player/view/authentication/login_screen.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -221,6 +222,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         } else if (e.code == 'email-already-in-use') {
                           print('The account already exists for that email');
                         }
+                        ErrorMessage.showSnackbar(e.message);
                       } catch (e) {
                         print(e);
                       }

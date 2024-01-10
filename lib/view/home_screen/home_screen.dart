@@ -6,6 +6,7 @@ import 'package:music_player/utils/png_icons.dart';
 import 'package:music_player/view/home_screen/widgets/song_list_tile.dart';
 import 'package:music_player/view/play_now_screen/play_now_screen.dart';
 import 'package:music_player/view/search_screen/search_screen.dart';
+import 'package:music_player/view/settings_screen/settings_screen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -17,8 +18,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
- 
-
   @override
   Widget build(BuildContext context) {
     final kHeight10 = SizedBox(height: 10);
@@ -55,8 +54,24 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
           SizedBox(
-            width: 10,
+            width: 20,
           ),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SettingsScreen(),
+                  ));
+            },
+            child: Image.asset(
+              IconsPng.settingsPng,
+              color: ConstantColors.themeWhiteColor,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          )
         ],
       ),
       body: Padding(

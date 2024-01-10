@@ -2,8 +2,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
+import 'package:music_player/view/authentication/error_message.dart';
 import 'package:music_player/view/authentication/registration_screen.dart';
-import 'package:music_player/view/home_screen/home_screen.dart';
+import 'package:music_player/view/bottom_navigationbar/bottom_navigation.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -147,7 +148,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) =>
+                                      BottomNavigationWidget(),
                                 ));
                           }
                         } on FirebaseAuthException catch (e) {
@@ -156,6 +158,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           } else if (e.code == 'wrong-password') {
                             print('wrong password provided');
                           }
+                          ErrorMessage.showSnackbar(e.message);
                         }
                       }
                     },

@@ -2,18 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/model/my_song_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class SearchControllerProvider with ChangeNotifier {
-  final audioQuery = OnAudioQuery();
-  static List<MySongsModel> allSongsList = [];
-  List<MySongsModel> seachListsongs = List.from(allSongsList);
-  seachList(String value) {
-    seachListsongs = allSongsList
-        .where((element) =>
-            element.displayName.toLowerCase().contains(value.toLowerCase()))
-        .toList();
-
-    notifyListeners();
-  }
+class PlaylistController with ChangeNotifier {
+  OnAudioQuery audioQuery = OnAudioQuery();
+  List<MySongsModel> allSongsList = [];
 
   fetchDeviceSongs() async {
     final List<SongModel> deviceSongs = await audioQuery.querySongs(
