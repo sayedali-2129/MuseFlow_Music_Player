@@ -8,8 +8,9 @@ class PlaylistController with ChangeNotifier {
   List<MySongsModel> allSongsList = [];
 
   List<PlayListModelList> playlists = [];
-
   List<MySongsModel> playlistSongsadd = [];
+
+  List<MySongsModel> favorites = [];
 
   newPlaylist(String? name, String? count) {
     playlists.add(PlayListModelList(name: name!, count: count!));
@@ -23,6 +24,16 @@ class PlaylistController with ChangeNotifier {
 
   addSongToPlalist(MySongsModel songs, BuildContext context) {
     playlistSongsadd.add(songs);
+    notifyListeners();
+  }
+
+  addToFavorites(MySongsModel favoriteSongs, BuildContext context) {
+    favorites.add(favoriteSongs);
+    notifyListeners();
+  }
+
+  removeFavorite(int index) {
+    favorites.removeAt(index);
     notifyListeners();
   }
 

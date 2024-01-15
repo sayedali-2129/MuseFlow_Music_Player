@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
+import 'package:music_player/utils/png_icons.dart';
+import 'package:music_player/view/categories/favorites_screen/favorites_screen.dart';
 import 'package:music_player/view/categories/play_list_screen/play_list_screen.dart';
 import 'package:music_player/view/categories/widgets/category_container.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +33,19 @@ class CategoriesScreen extends StatelessWidget {
           CategoryContainer(
               name: "Playlists",
               count: "${plalistProvider.playlists.length} playlists",
+              icon: IconsPng.playLsitPng,
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PlayListScreen()));
+              }),
+          CategoryContainer(
+              name: "Favorites",
+              count: "${plalistProvider.favorites.length} songs",
+              icon: IconsPng.heartPng,
+              iconScale: 20,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
               }),
         ],
       ),

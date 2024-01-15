@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
-import 'package:music_player/utils/png_icons.dart';
 
 class CategoryContainer extends StatelessWidget {
   const CategoryContainer(
       {super.key,
       required this.name,
       required this.count,
-      required this.onTap});
+      required this.onTap,
+      required this.icon,
+      this.iconScale = 10});
   final String name;
   final String count;
   final onTap;
-
+  final String icon;
+  final double iconScale;
   @override
   Widget build(BuildContext context) {
     final kHeight5 = SizedBox(height: 5);
@@ -32,10 +34,8 @@ class CategoryContainer extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   border: Border.all(color: ConstantColors.themeWhiteColor),
                   image: DecorationImage(
-                      image: AssetImage(
-                        IconsPng.playLsitPng,
-                      ),
-                      scale: 10,
+                      image: AssetImage(icon),
+                      scale: iconScale,
                       invertColors: true),
                 ),
                 // child: Icon(

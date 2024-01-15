@@ -99,6 +99,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PlaynowScreen(
+                            index: index,
                             songData: playerController.allSongsList),
                       ));
                 },

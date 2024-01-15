@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
+import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/model/my_song_model.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
@@ -13,8 +14,10 @@ class PlaynowScreen extends StatefulWidget {
   const PlaynowScreen({
     super.key,
     required this.songData,
+    this.index,
   });
   final List<MySongsModel> songData;
+  final int? index;
 
   @override
   State<PlaynowScreen> createState() => _PlaynowScreenState();
@@ -53,6 +56,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
 
     PlayNowController playerController =
         Provider.of<PlayNowController>(context);
+
+    final playlistProvider = Provider.of<PlaylistController>(context);
 
     return Scaffold(
       appBar: AppBar(
@@ -126,10 +131,24 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                         ),
                       ),
                     ),
-                    Image.asset(
-                      IconsPng.heartPng,
-                      color: ConstantColors.unSelectedIndex,
-                    ),
+                    GestureDetector(
+                      onTap: () {
+                        playlistProvider.addToFavorites(
+                            widget.songData[playerController.playIndex],
+                            context);
+                      },
+                      child: playlistProvider.favorites.contains(
+                              widget.songData[playerController.playIndex])
+                          ? Icon(
+                              Icons.favorite,
+                              size: 28,
+                            )
+                          : Icon(
+                              Icons.favorite_outline,
+                              color: ConstantColors.unSelectedIndex,
+                              size: 28,
+                            ),
+                    )
                   ],
                 ),
               ),
