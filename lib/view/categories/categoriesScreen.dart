@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/view/categories/play_list_screen/play_list_screen.dart';
 import 'package:music_player/view/categories/widgets/category_container.dart';
+import 'package:provider/provider.dart';
 
 class CategoriesScreen extends StatelessWidget {
   const CategoriesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final plalistProvider = Provider.of<PlaylistController>(context);
     final kHeight5 = SizedBox(height: 5);
     return Scaffold(
       backgroundColor: ConstantColors.themeBlueColor,
@@ -27,7 +30,7 @@ class CategoriesScreen extends StatelessWidget {
         children: [
           CategoryContainer(
               name: "Playlists",
-              count: "count",
+              count: "${plalistProvider.playlists.length} playlists",
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => PlayListScreen()));

@@ -13,6 +13,7 @@ class Playlist_SongSelection extends StatelessWidget {
   Widget build(BuildContext context) {
     Provider.of<PlaylistController>(context, listen: false).fetchDeviceSongs();
     final playListProvider = Provider.of<PlaylistController>(context);
+
     return Scaffold(
         backgroundColor: ConstantColors.themeBlueColor,
         appBar: AppBar(
@@ -39,6 +40,10 @@ class Playlist_SongSelection extends StatelessWidget {
               artworkBorder: BorderRadius.circular(10),
               nullArtworkWidget: Image.asset(ConstantImage.mainLogoPng),
             ),
+            onTap: () {
+              playListProvider.addSongToPlalist(
+                  playListProvider.allSongsList[index], context);
+            },
           ),
         ));
   }

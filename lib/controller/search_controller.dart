@@ -32,5 +32,6 @@ class SearchControllerProvider with ChangeNotifier {
             data: e.data,
             duration: e.duration))
         .toList();
+    notifyListeners();
   }
 }

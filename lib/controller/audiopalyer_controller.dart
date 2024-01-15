@@ -9,7 +9,7 @@ class PlayNowController with ChangeNotifier {
   final audioQuery = OnAudioQuery();
 
   List<MySongsModel> allSongsList = [];
-  List<AudioSource> songsList = [];
+  // List<AudioSource> songsList = [];
   int playIndex = 0;
   int nextIndex = 0;
 

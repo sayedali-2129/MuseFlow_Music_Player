@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
-import 'package:music_player/view/categories/categoiesScreen.dart';
+import 'package:music_player/view/categories/categoriesScreen.dart';
 import 'package:music_player/view/home_screen/home_screen.dart';
 import 'package:music_player/view/profile_screen/profile_screen.dart';
 

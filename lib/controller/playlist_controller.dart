@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:music_player/model/my_song_model.dart';
+import 'package:music_player/model/playlist_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class PlaylistController with ChangeNotifier {
   OnAudioQuery audioQuery = OnAudioQuery();
   List<MySongsModel> allSongsList = [];
+
+  List<PlayListModelList> playlists = [];
+
+  List<MySongsModel> playlistSongsadd = [];
+
+  newPlaylist(String? name, String? count) {
+    playlists.add(PlayListModelList(name: name!, count: count!));
+    notifyListeners();
+  }
+
+  removePlaylist(int index) {
+    playlists.removeAt(index);
+    notifyListeners();
+  }
+
+  addSongToPlalist(MySongsModel songs, BuildContext context) {
+    playlistSongsadd.add(songs);
+    notifyListeners();
+  }
 
   fetchDeviceSongs() async {
     final List<SongModel> deviceSongs = await audioQuery.querySongs(
@@ -23,5 +43,6 @@ class PlaylistController with ChangeNotifier {
             data: e.data,
             duration: e.duration))
         .toList();
+    notifyListeners();
   }
 }

@@ -4,10 +4,15 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 class PlaylistSelectionTile extends StatelessWidget {
   const PlaylistSelectionTile(
-      {super.key, required this.songTitle, required this.artist, this.image});
+      {super.key,
+      required this.songTitle,
+      required this.artist,
+      this.image,
+      this.onTap});
   final String songTitle;
   final String artist;
   final QueryArtworkWidget? image;
+  final onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +61,16 @@ class PlaylistSelectionTile extends StatelessWidget {
                 ),
               ),
             ),
+            GestureDetector(
+              onTap: onTap,
+              child: Icon(
+                Icons.add,
+                size: 27,
+              ),
+            ),
+            SizedBox(
+              width: 10,
+            )
           ],
         ),
       ),
