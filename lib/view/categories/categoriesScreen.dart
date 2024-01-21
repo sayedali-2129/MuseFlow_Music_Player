@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
+import 'package:music_player/view/categories/albums/albums_screen.dart';
 import 'package:music_player/view/categories/favorites_screen/favorites_screen.dart';
 import 'package:music_player/view/categories/play_list_screen/play_list_screen.dart';
 import 'package:music_player/view/categories/widgets/category_container.dart';
@@ -43,6 +44,33 @@ class CategoriesScreen extends StatelessWidget {
               count: "${plalistProvider.favorites.length} songs",
               icon: IconsPng.heartPng,
               iconScale: 20,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
+              }),
+          CategoryContainer(
+              name: "Albums",
+              count: "${plalistProvider.albums.length} songs",
+              icon: IconsPng.albumsPng,
+              iconScale: 7,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => AlbumsScreen()));
+              }),
+          CategoryContainer(
+              name: "Artists",
+              count: "${plalistProvider.favorites.length} songs",
+              icon: IconsPng.artistPng,
+              iconScale: 7,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
+              }),
+          CategoryContainer(
+              name: "Genres",
+              count: "${plalistProvider.favorites.length} songs",
+              icon: IconsPng.musicNotePng,
+              iconScale: 9,
               onTap: () {
                 Navigator.push(context,
                     MaterialPageRoute(builder: (context) => FavoriteScreen()));

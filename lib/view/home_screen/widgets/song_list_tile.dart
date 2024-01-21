@@ -4,13 +4,10 @@ import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListTile extends StatelessWidget {
   const SongListTile(
-      {super.key,
-      required this.songTitle,
-      required this.artist,
-      required this.image});
+      {super.key, required this.songTitle, required this.artist, this.image});
   final String songTitle;
   final String artist;
-  final QueryArtworkWidget image;
+  final QueryArtworkWidget? image;
 
   @override
   Widget build(BuildContext context) {

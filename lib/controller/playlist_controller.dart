@@ -9,8 +9,12 @@ class PlaylistController with ChangeNotifier {
 
   List<PlayListModelList> playlists = [];
   List<MySongsModel> playlistSongsadd = [];
-
   List<MySongsModel> favorites = [];
+  List<AlbumModel> albums = [];
+
+  getAlbums() async {
+    albums = await audioQuery.queryAlbums();
+  }
 
   newPlaylist(String? name, String? count) {
     playlists.add(PlayListModelList(name: name!, count: count!));
@@ -27,13 +31,12 @@ class PlaylistController with ChangeNotifier {
     notifyListeners();
   }
 
-  addToFavorites(MySongsModel favoriteSongs, BuildContext context) {
-    favorites.add(favoriteSongs);
-    notifyListeners();
-  }
-
-  removeFavorite(int index) {
-    favorites.removeAt(index);
+  favoriteSongs(MySongsModel song) {
+    if (favorites.contains(song)) {
+      favorites.remove(song);
+    } else {
+      favorites.add(song);
+    }
     notifyListeners();
   }
 
@@ -46,13 +49,14 @@ class PlaylistController with ChangeNotifier {
     );
     allSongsList = deviceSongs
         .map((e) => MySongsModel(
-            id: e.id,
-            title: e.title,
-            displayName: e.displayNameWOExt,
-            artist: e.artist!,
-            url: e.uri!,
-            data: e.data,
-            duration: e.duration))
+              id: e.id,
+              title: e.title,
+              displayName: e.displayNameWOExt,
+              artist: e.artist!,
+              url: e.uri!,
+              data: e.data,
+              duration: e.duration,
+            ))
         .toList();
     notifyListeners();
   }

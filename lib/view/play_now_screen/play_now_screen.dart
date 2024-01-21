@@ -133,9 +133,8 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        playlistProvider.addToFavorites(
-                            widget.songData[playerController.playIndex],
-                            context);
+                        playlistProvider.favoriteSongs(
+                            widget.songData[playerController.playIndex]);
                       },
                       child: playlistProvider.favorites.contains(
                               widget.songData[playerController.playIndex])

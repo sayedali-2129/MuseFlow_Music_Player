@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
-import 'package:music_player/view/authentication/login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -20,29 +18,6 @@ class SettingsScreen extends StatelessWidget {
         ),
       ),
       backgroundColor: ConstantColors.themeBlueColor,
-      body: Column(
-        children: [
-          TextButton(
-            onPressed: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoginScreen(),
-                  ));
-            },
-            child: Row(
-              children: [
-                Text(
-                  "SignOut",
-                  style: TextStyle(
-                      color: ConstantColors.themeWhiteColor, fontSize: 25),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
     );
   }
 }

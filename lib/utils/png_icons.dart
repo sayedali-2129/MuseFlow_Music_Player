@@ -15,4 +15,7 @@ class IconsPng {
   static String userPng = "assets/icons png/user.png";
   static String playButton = "assets/icons png/play button.png";
   static String playLsitPng = "assets/icons png/playlist.png";
+  static String albumsPng = "assets/icons png/albums.png";
+  static String artistPng = "assets/icons png/artist.png";
+  static String musicNotePng = "assets/icons png/music note.png";
 }

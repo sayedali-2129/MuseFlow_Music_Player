@@ -25,7 +25,6 @@ class FavoriteScreen extends StatelessWidget {
               color: ConstantColors.themeWhiteColor,
               fontWeight: FontWeight.bold),
         ),
-        titleSpacing: 0,
         backgroundColor: ConstantColors.themeBlueColor,
       ),
       backgroundColor: ConstantColors.themeBlueColor,

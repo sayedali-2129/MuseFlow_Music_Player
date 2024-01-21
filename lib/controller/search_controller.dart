@@ -24,13 +24,14 @@ class SearchControllerProvider with ChangeNotifier {
     );
     allSongsList = deviceSongs
         .map((e) => MySongsModel(
-            id: e.id,
-            title: e.title,
-            displayName: e.displayNameWOExt,
-            artist: e.artist!,
-            url: e.uri!,
-            data: e.data,
-            duration: e.duration))
+              id: e.id,
+              title: e.title,
+              displayName: e.displayNameWOExt,
+              artist: e.artist!,
+              url: e.uri!,
+              data: e.data,
+              duration: e.duration,
+            ))
         .toList();
     notifyListeners();
   }
