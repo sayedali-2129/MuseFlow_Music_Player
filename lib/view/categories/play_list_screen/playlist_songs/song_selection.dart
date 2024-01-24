@@ -12,7 +12,8 @@ class Playlist_SongSelection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Provider.of<PlaylistController>(context, listen: false).fetchDeviceSongs();
-    final playListProvider = Provider.of<PlaylistController>(context);
+    PlaylistController playListProvider =
+        Provider.of<PlaylistController>(context);
 
     return Scaffold(
         backgroundColor: ConstantColors.themeBlueColor,
@@ -42,7 +43,8 @@ class Playlist_SongSelection extends StatelessWidget {
             ),
             onTap: () {
               playListProvider.addSongToPlalist(
-                  playListProvider.allSongsList[index], context);
+                  playListProvider.allSongsList[index],
+                  playListProvider.playlists[index]);
             },
           ),
         ));

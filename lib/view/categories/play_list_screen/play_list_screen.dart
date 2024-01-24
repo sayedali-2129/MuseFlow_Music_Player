@@ -6,12 +6,13 @@ import 'package:music_player/view/categories/play_list_screen/playlist_songs/pla
 import 'package:provider/provider.dart';
 
 class PlayListScreen extends StatelessWidget {
-  const PlayListScreen({super.key});
+  const PlayListScreen({Key? key});
 
   @override
   Widget build(BuildContext context) {
     final playlistName = TextEditingController();
-    final playlistController = Provider.of<PlaylistController>(context);
+    PlaylistController playlistController =
+        Provider.of<PlaylistController>(context);
 
     return Scaffold(
       backgroundColor: ConstantColors.themeBlueColor,
@@ -22,16 +23,17 @@ class PlayListScreen extends StatelessWidget {
         title: Text(
           "Your PlayLists",
           style: TextStyle(
-              color: ConstantColors.themeWhiteColor,
-              fontWeight: FontWeight.bold),
+            color: ConstantColors.themeWhiteColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       body: playlistController.playlists.isEmpty
           ? Center(
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
                   Image.asset(
                     IconsPng.playLsitPng,
                     scale: 6,
@@ -46,16 +48,19 @@ class PlayListScreen extends StatelessWidget {
                       color: Colors.white12,
                     ),
                   )
-                ]))
+                ],
+              ),
+            )
           : ListView.builder(
               itemCount: playlistController.playlists.length,
               itemBuilder: (context, index) => GestureDetector(
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PlaylistSongs(index: index),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PlaylistSongs(index: index),
+                    ),
+                  );
                 },
                 child: ListTile(
                   leading: Image.asset(
@@ -70,7 +75,7 @@ class PlayListScreen extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    "${playlistController.playlistSongsadd.length} songs",
+                    "${playlistController.playlists[index].playlistSongs.length} songs",
                     style: TextStyle(color: ConstantColors.lightblueColor),
                   ),
                   trailing: GestureDetector(
@@ -87,7 +92,8 @@ class PlayListScreen extends StatelessWidget {
             ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          alertBoxPlaylist(context, playlistName, playlistController);
+          // Pass the index value when calling the alertBoxPlaylist function
+          alertBoxPlaylist(context, playlistName, playlistController, index: 0);
         },
         backgroundColor: ConstantColors.themeWhiteColor,
         child: Icon(
@@ -98,10 +104,9 @@ class PlayListScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> alertBoxPlaylist(
-      BuildContext context,
-      TextEditingController playlistName,
-      PlaylistController playlistController) {
+  Future<dynamic> alertBoxPlaylist(BuildContext context,
+      TextEditingController playlistName, PlaylistController playlistController,
+      {required int index}) {
     return showDialog(
       context: context,
       builder: (
@@ -110,8 +115,9 @@ class PlayListScreen extends StatelessWidget {
           AlertDialog(
         backgroundColor: ConstantColors.themeBlueColor,
         shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-            side: BorderSide(color: ConstantColors.themeWhiteColor)),
+          borderRadius: BorderRadius.circular(10),
+          side: BorderSide(color: ConstantColors.themeWhiteColor),
+        ),
         title: Text(
           "New Playlist",
           style: TextStyle(color: ConstantColors.themeWhiteColor),
@@ -122,29 +128,40 @@ class PlayListScreen extends StatelessWidget {
             style: TextStyle(color: ConstantColors.themeWhiteColor),
             controller: playlistName,
             decoration: InputDecoration(
-                contentPadding: EdgeInsets.all(8),
-                hintText: "Playlist Name",
-                hintStyle: TextStyle(color: ConstantColors.themeWhiteColor),
-                border: OutlineInputBorder(
-                    borderSide:
-                        BorderSide(color: ConstantColors.themeWhiteColor))),
+              contentPadding: EdgeInsets.all(8),
+              hintText: "Playlist Name",
+              hintStyle: TextStyle(color: ConstantColors.themeWhiteColor),
+              border: OutlineInputBorder(
+                borderSide: BorderSide(color: ConstantColors.themeWhiteColor),
+              ),
+            ),
           ),
         ),
         actions: [
           TextButton(
-              onPressed: () {
-                playlistController.newPlaylist(playlistName.text, "");
-                playlistName.clear();
-                Navigator.pop(context);
-              },
-              child: Text("Create",
-                  style: TextStyle(color: ConstantColors.themeWhiteColor))),
+            onPressed: () {
+              playlistController.newPlaylist(
+                playlistName.text,
+                "",
+                index,
+              );
+              playlistName.clear();
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Create",
+              style: TextStyle(color: ConstantColors.themeWhiteColor),
+            ),
+          ),
           TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: Text("Cancel",
-                  style: TextStyle(color: ConstantColors.themeWhiteColor)))
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text(
+              "Cancel",
+              style: TextStyle(color: ConstantColors.themeWhiteColor),
+            ),
+          ),
         ],
       ),
     );

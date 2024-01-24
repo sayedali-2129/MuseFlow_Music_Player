@@ -19,3 +19,21 @@ class MySongsModel {
     required this.data,
   });
 }
+
+class AlbumSongsModel {
+  final int id;
+  final String title;
+  final String artist;
+  final String album;
+  final String genre;
+  final String filePath;
+
+  AlbumSongsModel({
+    required this.id,
+    required this.title,
+    required this.artist,
+    required this.album,
+    required this.genre,
+    required this.filePath,
+  });
+}

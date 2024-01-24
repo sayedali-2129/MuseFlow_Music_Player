@@ -50,7 +50,7 @@ class CategoriesScreen extends StatelessWidget {
               }),
           CategoryContainer(
               name: "Albums",
-              count: "${plalistProvider.albums.length} songs",
+              count: "${plalistProvider.albums.length} Albums",
               icon: IconsPng.albumsPng,
               iconScale: 7,
               onTap: () {
