@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/controller/albumController.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
+import 'package:music_player/controller/genre_controller.dart';
 import 'package:music_player/model/my_song_model.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
@@ -9,17 +9,17 @@ import 'package:music_player/view/play_now_screen/play_now_screen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
-class AlbumSongs extends StatelessWidget {
-  const AlbumSongs(this.album, this.selectedAlbum);
-  final AlbumModel album;
-  final String selectedAlbum;
+class GenreSongs extends StatelessWidget {
+  const GenreSongs(this.genre, this.selectedGenre);
+  final GenreModel genre;
+  final String selectedGenre;
 
   @override
   Widget build(BuildContext context) {
-    final albumProvider = Provider.of<AlbumController>(context);
+    final genreProvider = Provider.of<GenreController>(context);
     final playerProvider = Provider.of<PlayNowController>(context);
-    Provider.of<AlbumController>(context, listen: false)
-        .getAlbumSongs(albumProvider.selectedAlbum);
+    Provider.of<GenreController>(context, listen: false)
+        .getGenreSongs(genreProvider.selectedGenre);
 
     return Scaffold(
         appBar: AppBar(
@@ -27,19 +27,19 @@ class AlbumSongs extends StatelessWidget {
           titleSpacing: 0,
           backgroundColor: ConstantColors.themeBlueColor,
           title: Text(
-            "${selectedAlbum}",
+            "${selectedGenre}",
             style:
                 TextStyle(color: ConstantColors.themeWhiteColor, fontSize: 18),
           ),
         ),
         backgroundColor: ConstantColors.themeBlueColor,
         body: FutureBuilder<List<MySongsModel>>(
-          future: albumProvider.getAlbumSongs(selectedAlbum),
+          future: genreProvider.getGenreSongs(selectedGenre),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No songs found for $selectedAlbum.');
+              return Text('No songs found for $selectedGenre.');
             } else {
               List<MySongsModel> songs = snapshot.data!;
               return ListView.builder(

@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/controller/albumController.dart';
+import 'package:music_player/controller/artistController.dart';
+import 'package:music_player/controller/genre_controller.dart';
 import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
 import 'package:music_player/view/categories/albums/albums_screen.dart';
+import 'package:music_player/view/categories/artists/artistScreen.dart';
 import 'package:music_player/view/categories/favorites_screen/favorites_screen.dart';
+import 'package:music_player/view/categories/genres/genre_screen.dart';
 import 'package:music_player/view/categories/play_list_screen/play_list_screen.dart';
 import 'package:music_player/view/categories/widgets/category_container.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +19,10 @@ class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final plalistProvider = Provider.of<PlaylistController>(context);
-    final kHeight5 = SizedBox(height: 5);
+    final albumProvider = Provider.of<AlbumController>(context);
+    final artistProvider = Provider.of<ArtistController>(context);
+    final genreProvider = Provider.of<GenreController>(context);
+
     return Scaffold(
       backgroundColor: ConstantColors.themeBlueColor,
       appBar: AppBar(
@@ -50,7 +58,7 @@ class CategoriesScreen extends StatelessWidget {
               }),
           CategoryContainer(
               name: "Albums",
-              count: "${plalistProvider.albums.length} Albums",
+              count: "${albumProvider.albums.length} Albums",
               icon: IconsPng.albumsPng,
               iconScale: 7,
               onTap: () {
@@ -59,21 +67,21 @@ class CategoriesScreen extends StatelessWidget {
               }),
           CategoryContainer(
               name: "Artists",
-              count: "${plalistProvider.favorites.length} songs",
+              count: "${artistProvider.artists.length} Artists",
               icon: IconsPng.artistPng,
               iconScale: 7,
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
+                    MaterialPageRoute(builder: (context) => ArtistScreen()));
               }),
           CategoryContainer(
               name: "Genres",
-              count: "${plalistProvider.favorites.length} songs",
+              count: "${genreProvider.genres.length} songs",
               icon: IconsPng.musicNotePng,
               iconScale: 9,
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => FavoriteScreen()));
+                    MaterialPageRoute(builder: (context) => GenreScreen()));
               }),
         ],
       ),

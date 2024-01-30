@@ -10,31 +10,55 @@ class PlaylistController with ChangeNotifier {
   List<PlayListModelList> playlists = [];
   List<MySongsModel> playlistSongsadd = [];
   List<MySongsModel> favorites = [];
+  // List<AlbumSongsModel> albums = [];
+  // List<MySongsModel> albumSongsList = [];
+  // int selectrdAlbumId = 0;
+
+  // int selectedAlbumIndex = 0;
+
   List<AlbumModel> albums = [];
-  List<SongModel> albumSongsList = [];
-  int selectrdAlbumId = 0;
+  List<MySongsModel> audioFiles = [];
 
-  int selectedAlbumIndex = 0;
-
-  Future<void> setSelectedAlbum(int albumId) async {
-    selectrdAlbumId = albumId;
-    await getAlbumSongs();
+  Future<void> loadAlbums() async {
+    final albumsData = await audioQuery.queryAlbums(
+        orderType: OrderType.ASC_OR_SMALLER,
+        sortType: AlbumSortType.ALBUM,
+        ignoreCase: true,
+        uriType: UriType.EXTERNAL);
+    albums = albumsData;
     notifyListeners();
   }
+// fcfmasl;dmasl;dmas
+  // Future<void> loadAudioFilesForAlbum(String albumid) async {
+  //   await audioQuery
+  //       .queryAudiosFrom(AudiosFromType.ALBUM, albumid,
+  //           orderType: OrderType.ASC_OR_SMALLER,
+  //           sortType: SongSortType.ALBUM,
+  //           ignoreCase: true)
+  //       .then((songs) => songs = audioFiles);
 
-  Future<void> getAlbumSongs() async {
-    albumSongsList = await audioQuery.queryAudiosFrom(
-      AudiosFromType.ALBUM,
-      selectrdAlbumId,
-      sortType: SongSortType.ARTIST,
-    );
-    notifyListeners();
-  }
+  //   notifyListeners();
+  // }
 
-  selectedAlbum(int index) {
-    selectedAlbumIndex = index;
-    notifyListeners();
-  }
+  // Future<void> setSelectedAlbum(int albumId) async {
+  //   selectrdAlbumId = albumId;
+  //   await getAlbumSongs();
+  //   notifyListeners();
+  // }
+
+  // Future<void> getAlbumSongs() async {
+  //   albumSongsList = await audioQuery.queryAudiosFrom(
+  //     AudiosFromType.ALBUM,
+  //     selectrdAlbumId,
+  //     sortType: SongSortType.ARTIST,
+  //   );
+  //   notifyListeners();
+  // }
+
+  // selectedAlbum(int index) {
+  //   selectedAlbumIndex = index;
+  //   notifyListeners();
+  // }
 
   newPlaylist(String? name, String? count, int? id) {
     playlists.add(PlayListModelList(name: name!, count: count!, id: id!));
@@ -83,8 +107,29 @@ class PlaylistController with ChangeNotifier {
     notifyListeners();
   }
 
+  alb() async {
+    final List<SongModel> alb = await audioQuery.querySongs(
+      sortType: SongSortType.ALBUM,
+      orderType: OrderType.DESC_OR_GREATER,
+      uriType: UriType.EXTERNAL,
+      ignoreCase: true,
+    );
+    audioFiles = alb
+        .map((e) => MySongsModel(
+              id: e.id,
+              title: e.title,
+              displayName: e.displayNameWOExt,
+              artist: e.artist!,
+              url: e.uri!,
+              data: e.data,
+              duration: e.duration,
+            ))
+        .toList();
+    notifyListeners();
+  }
+
   // getAlbums() async {
-  //   final List<AlbumModel> albumSongs = await audioQuery.queryAlbums(
+  //   final albumSongs = await audioQuery.queryAlbums(
   //       sortType: AlbumSortType.ALBUM,
   //       orderType: OrderType.ASC_OR_SMALLER,
   //       uriType: UriType.EXTERNAL,
@@ -100,15 +145,14 @@ class PlaylistController with ChangeNotifier {
   //           filePath: ""))
   //       .toList();
   //   notifyListeners();
-  // }
+}
 
   // getAlbumSongs() async {
-  //   final List<SongModel> album_songs = await audioQuery.querySongs(
-  //     sortType: SongSortType.ALBUM,
-  //     orderType: OrderType.ASC_OR_SMALLER,
-  //     uriType: UriType.EXTERNAL,
-  //     ignoreCase: true,
-  //   );
+  //   final List<SongModel> album_songs = await audioQuery.queryAudiosFrom(
+  //       AudiosFromType.ALBUM, selectrdAlbumId,
+  //       sortType: SongSortType.ALBUM,
+  //       orderType: OrderType.ASC_OR_SMALLER,
+  //       ignoreCase: true);
   //   albumSongsList = album_songs
   //       .map((e) => MySongsModel(
   //           id: e.id,
@@ -120,6 +164,21 @@ class PlaylistController with ChangeNotifier {
   //           data: e.data))
   //       .toList();
   //   notifyListeners();
-
   // }
-}
+  // Future<void> getAlbumSongs(String albumId) async {
+  //   final albumSongsData =
+  //       await audioQuery.queryAudiosFrom(AudiosFromType.ALBUM, albumId);
+
+  //   albumSongsList = albumSongsData
+  //       .map((audios) => MySongsModel(
+  //           id: audios.id,
+  //           title: audios.title,
+  //           displayName: audios.displayNameWOExt,
+  //           artist: audios.artist!,
+  //           url: audios.uri!,
+  //           duration: audios.duration,
+  //           data: audios.data))
+  //       .toList();
+  //   notifyListeners();
+  // }
+

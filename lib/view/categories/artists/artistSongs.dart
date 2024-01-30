@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:music_player/controller/albumController.dart';
+import 'package:music_player/controller/artistController.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
 import 'package:music_player/model/my_song_model.dart';
 import 'package:music_player/utils/color_constants.dart';
@@ -9,17 +9,17 @@ import 'package:music_player/view/play_now_screen/play_now_screen.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
-class AlbumSongs extends StatelessWidget {
-  const AlbumSongs(this.album, this.selectedAlbum);
-  final AlbumModel album;
-  final String selectedAlbum;
+class ArtistSongs extends StatelessWidget {
+  const ArtistSongs(this.artist, this.selectedArtist);
+  final ArtistModel artist;
+  final String selectedArtist;
 
   @override
   Widget build(BuildContext context) {
-    final albumProvider = Provider.of<AlbumController>(context);
+    final artistProvider = Provider.of<ArtistController>(context);
     final playerProvider = Provider.of<PlayNowController>(context);
-    Provider.of<AlbumController>(context, listen: false)
-        .getAlbumSongs(albumProvider.selectedAlbum);
+    Provider.of<ArtistController>(context, listen: false)
+        .getArtistSongs(artistProvider.selectedArtist);
 
     return Scaffold(
         appBar: AppBar(
@@ -27,19 +27,19 @@ class AlbumSongs extends StatelessWidget {
           titleSpacing: 0,
           backgroundColor: ConstantColors.themeBlueColor,
           title: Text(
-            "${selectedAlbum}",
+            "${selectedArtist}",
             style:
                 TextStyle(color: ConstantColors.themeWhiteColor, fontSize: 18),
           ),
         ),
         backgroundColor: ConstantColors.themeBlueColor,
         body: FutureBuilder<List<MySongsModel>>(
-          future: albumProvider.getAlbumSongs(selectedAlbum),
+          future: artistProvider.getArtistSongs(selectedArtist),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              return Text('No songs found for $selectedAlbum.');
+              return Text('No songs found for $selectedArtist.');
             } else {
               List<MySongsModel> songs = snapshot.data!;
               return ListView.builder(
@@ -57,7 +57,7 @@ class AlbumSongs extends StatelessWidget {
                           ));
                     },
                     child: SongListTile(
-                      songTitle: song.displayName,
+                      songTitle: song.title,
                       artist: song.artist,
                       image: QueryArtworkWidget(
                         id: song.id,

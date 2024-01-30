@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:music_player/controller/albumController.dart';
+import 'package:music_player/controller/artistController.dart';
 import 'package:music_player/controller/audiopalyer_controller.dart';
+import 'package:music_player/controller/genre_controller.dart';
 import 'package:music_player/controller/playlist_controller.dart';
 import 'package:music_player/controller/search_controller.dart';
 import 'package:music_player/utils/color_constants.dart';
@@ -25,6 +28,9 @@ class MyApp extends StatelessWidget {
             ChangeNotifierProvider(
                 create: (context) => SearchControllerProvider()),
             ChangeNotifierProvider(create: (context) => PlaylistController()),
+            ChangeNotifierProvider(create: (context) => AlbumController()),
+            ChangeNotifierProvider(create: (context) => ArtistController()),
+            ChangeNotifierProvider(create: (context) => GenreController()),
           ],
           child: MaterialApp(
             // scaffoldMessengerKey: ErrorMessage.messengerKey,
