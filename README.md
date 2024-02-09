@@ -28,14 +28,14 @@ To get started with MuseFlow, follow these steps:
 <img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/b0543a1c-f249-44e3-8a81-b1774c25f778)" width="150" height="300">
 <img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/ca9329df-c3f6-4513-a7ee-b2d2da84daca)" width="150" height="300">
 <img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/ae231283-0de8-4707-8cec-2a5d77f3d53a)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/03fc2197-d4eb-4187-bb53-ffa296b03865)" width="150" height="300">
+<img src="![Screenshot_1707499337](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/f7d83ad5-e2d5-4fb8-bb2c-524f30a61769)" width="150" height="300">
 
 
 Thank you for choosing MuseFlow Music Player! We hope you enjoy using it as much as we enjoyed developing it. Happy listening!
 
 
 
-![Screenshot_1707499337](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/f7d83ad5-e2d5-4fb8-bb2c-524f30a61769)
+
 
 
 
