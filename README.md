@@ -35,6 +35,7 @@ Thank you for choosing MuseFlow Music Player! We hope you enjoy using it as much
 
 
 
+![Screenshot_1707499337](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/f7d83ad5-e2d5-4fb8-bb2c-524f30a61769)
 
 
 
