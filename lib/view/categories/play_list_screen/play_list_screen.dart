@@ -58,7 +58,8 @@ class PlayListScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PlaylistSongs(index: index),
+                      builder: (context) => PlaylistSongs(
+                          playlistName: playlistName.text, index: index),
                     ),
                   );
                 },
@@ -75,7 +76,7 @@ class PlayListScreen extends StatelessWidget {
                     ),
                   ),
                   subtitle: Text(
-                    "${playlistController.playlists[index].playlistSongs.length} songs",
+                    "${playlistController.playlistSongsadd.length} songs",
                     style: TextStyle(color: ConstantColors.lightblueColor),
                   ),
                   trailing: GestureDetector(
@@ -140,13 +141,17 @@ class PlayListScreen extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () {
-              playlistController.newPlaylist(
-                playlistName.text,
-                "",
-                index,
-              );
+              playlistController.newPlaylist(playlistName.text);
               playlistName.clear();
               Navigator.pop(context);
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(
+                  "New Playlist created",
+                  style: TextStyle(color: ConstantColors.themeBlueColor),
+                ),
+                backgroundColor: ConstantColors.themeWhiteColor,
+                duration: Duration(seconds: 2),
+              ));
             },
             child: Text(
               "Create",

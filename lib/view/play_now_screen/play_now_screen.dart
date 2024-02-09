@@ -7,6 +7,7 @@ import 'package:music_player/model/my_song_model.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:music_player/utils/image_constants.dart';
 import 'package:music_player/utils/png_icons.dart';
+import 'package:music_player/view/play_now_screen/playlist_bottomsheet.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
@@ -47,6 +48,7 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
   bool isPlayingSong = true;
 
   Image iconImage = Image.asset(IconsPng.pausePng);
+  final playlistName = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -176,10 +178,13 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                       //   width: 20,
                       // ),
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          playlistSheet(context, playlistProvider,
+                              playerController, widget.songData, playlistName);
+                        },
                         child: Icon(
                           Icons.playlist_add,
-                          color: ConstantColors.unSelectedIndex,
+                          color: ConstantColors.themeWhiteColor,
                           size: 27,
                         ),
                       )
@@ -187,18 +192,31 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                   ),
                   Row(
                     children: [
-                      Image.asset(
-                        IconsPng.repeatPng,
-                        color: ConstantColors.unSelectedIndex,
-                        height: 27,
-                        width: 27,
+                      GestureDetector(
+                        onTap: () {
+                          Provider.of<PlayNowController>(context, listen: false)
+                              .toggleLoopMode();
+                        },
+                        child: Image.asset(
+                          IconsPng.repeatPng,
+                          color: playerController.isRepeatEnabled
+                              ? ConstantColors.themeWhiteColor
+                              : ConstantColors.unSelectedIndex,
+                          height: 27,
+                          width: 27,
+                        ),
                       ),
                       kWidth10,
                       GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          Provider.of<PlayNowController>(context, listen: false)
+                              .shuffleSong();
+                        },
                         child: Image.asset(
                           IconsPng.shufflePng,
-                          color: ConstantColors.unSelectedIndex,
+                          color: playerController.audioPlayer.shuffleModeEnabled
+                              ? ConstantColors.themeWhiteColor
+                              : ConstantColors.unSelectedIndex,
                           height: 27,
                           width: 27,
                         ),
@@ -239,6 +257,9 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                   playerController.changeToSeconds(value.toInt());
                 });
               },
+              onChangeEnd: (value) {
+                playerController.seek(Duration(seconds: value.toInt()));
+              },
             ),
             SizedBox(
               height: 30,
@@ -248,12 +269,13 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
               children: [
                 GestureDetector(
                   onTap: () {
-                    int prevIndex = playerController.playIndex - 1;
-                    if (prevIndex < 0) {
-                      prevIndex = widget.songData.length - 1;
-                    }
                     Provider.of<PlayNowController>(context, listen: false)
-                        .playSong(widget.songData[prevIndex].url, prevIndex);
+                        .previousSong(
+                            playerController.playIndex, widget.songData.length);
+                    Provider.of<PlayNowController>(context, listen: false)
+                        .playSong(
+                            widget.songData[playerController.prevIndex].url,
+                            playerController.prevIndex);
                   },
                   child: Image.asset(
                     IconsPng.nextBackwardPng,
@@ -291,15 +313,10 @@ class _PlaynowScreenState extends State<PlaynowScreen> {
                 ),
                 GestureDetector(
                   onTap: () {
-                    // int nextIndex = playerController.playIndex + 1;
-                    // if (nextIndex >= widget.songData.length) {
-                    //   nextIndex = 0;
-                    // }
-                    // Provider.of<PlayNowController>(context, listen: false)
-                    //     .playSong(widget.songData[nextIndex].url, nextIndex);
                     Provider.of<PlayNowController>(context, listen: false)
                         .nextSong(
                             playerController.playIndex, widget.songData.length);
+
                     Provider.of<PlayNowController>(context, listen: false)
                         .playSong(
                             widget.songData[playerController.nextIndex].url,

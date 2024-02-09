@@ -2,13 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:music_player/utils/color_constants.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
-class PlaylistSelectionTile extends StatelessWidget {
-  const PlaylistSelectionTile({
-    super.key,
-    required this.songTitle,
-    required this.artist,
-    this.image,
-  });
+class PlaylistSongsTile extends StatelessWidget {
+  const PlaylistSongsTile(
+      {super.key, required this.songTitle, required this.artist, this.image});
   final String songTitle;
   final String artist;
   final QueryArtworkWidget? image;
@@ -60,12 +56,12 @@ class PlaylistSelectionTile extends StatelessWidget {
                 ),
               ),
             ),
-            Icon(
-              Icons.add,
-              size: 27,
-            ),
-            SizedBox(
-              width: 10,
+            GestureDetector(
+              onTap: () {},
+              child: Icon(
+                Icons.more_vert,
+                color: ConstantColors.themeWhiteColor,
+              ),
             )
           ],
         ),

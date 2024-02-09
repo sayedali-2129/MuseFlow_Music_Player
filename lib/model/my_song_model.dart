@@ -1,13 +1,28 @@
+import 'package:hive/hive.dart';
+
+part 'my_song_model.g.dart';
+
+@HiveType(typeId: 1)
 class MySongsModel {
+  @HiveField(0)
   int id;
+  @HiveField(1)
   String title;
+  @HiveField(2)
   String displayName;
+  @HiveField(3)
   String artist;
+  @HiveField(4)
   String url;
+  @HiveField(5)
   int? duration;
+  @HiveField(6)
   bool? favorites;
+  @HiveField(7)
   String data;
+  @HiveField(8)
   String? album;
+  @HiveField(9)
   String? genre;
 
   MySongsModel(

@@ -12,8 +12,11 @@ class PlayNowController with ChangeNotifier {
   // List<AudioSource> songsList = [];
   int playIndex = 0;
   int nextIndex = 0;
+  int prevIndex = 0;
 
   bool isPlaying = false;
+  bool isRepeatEnabled = false;
+  bool isShuffleEnabled = false;
 
   Duration duration = Duration();
   Duration position = Duration();
@@ -26,6 +29,7 @@ class PlayNowController with ChangeNotifier {
   Future<void> playSong(String? url, int index) async {
     playIndex = index;
     notifyListeners();
+
     try {
       await audioPlayer.setAudioSource(AudioSource.uri(Uri.parse(url!)));
       notifyListeners();
@@ -66,6 +70,18 @@ class PlayNowController with ChangeNotifier {
     }
   }
 
+  void previousSong(int index, int indexLength) {
+    prevIndex = index - 1;
+    if (prevIndex < 0) {
+      prevIndex = indexLength - 1;
+      notifyListeners();
+    }
+  }
+
+  void seek(Duration position) async {
+    await audioPlayer.seek(position);
+  }
+
   durationControl() {
     audioPlayer.durationStream.listen((d) {
       notifyListeners();
@@ -102,6 +118,36 @@ class PlayNowController with ChangeNotifier {
             ))
         .toList();
   }
+
+  void toggleLoopMode() async {
+    if (isRepeatEnabled) {
+      await audioPlayer.setLoopMode(LoopMode.off);
+    } else {
+      await audioPlayer.setLoopMode(LoopMode.one);
+    }
+    isRepeatEnabled = !isRepeatEnabled;
+    notifyListeners();
+  }
+
+  void shuffleSong() async {
+    if (isShuffleEnabled) {
+      await audioPlayer.setShuffleModeEnabled(false);
+    } else {
+      await audioPlayer.setShuffleModeEnabled(true);
+    }
+    isShuffleEnabled = !isShuffleEnabled;
+
+    notifyListeners();
+  }
+
+  Future<void> setShuffleMode() async {
+    if (audioPlayer.shuffleModeEnabled == true) {
+      audioPlayer.setShuffleModeEnabled(false);
+    } else {
+      audioPlayer.setShuffleModeEnabled(true);
+    }
+    notifyListeners();
+  }
 }
   //  await audioPlayer.setAudioSource(,
   //     ));
@@ -111,3 +157,4 @@ class PlayNowController with ChangeNotifier {
     //     notifyListeners();
     //   }
     //   audioPlayer.setAudioSource(ConcatenatingAudioSource(children: songsList));
+
