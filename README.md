@@ -22,13 +22,8 @@ To get started with MuseFlow, follow these steps:
 ## Screenshots
 
 
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/ba5be172-993d-4d1b-9ede-c3f163bfd0c6)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/2bee11be-cbed-4da1-bf35-dba725de345d)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/aedfcc77-8812-49f2-84e4-df5f8deb08c8)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/b0543a1c-f249-44e3-8a81-b1774c25f778)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/ca9329df-c3f6-4513-a7ee-b2d2da84daca)" width="150" height="300">
-<img src="(https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/ae231283-0de8-4707-8cec-2a5d77f3d53a)" width="150" height="300">
-<img src="![Screenshot_1707499337](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/f7d83ad5-e2d5-4fb8-bb2c-524f30a61769)" width="150" height="300">
+![Screenshot_1707499232](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/dd2ff4a1-a325-4633-ae20-7f8d704f29db)
+src=" width="200" height="400" />
 
 
 Thank you for choosing MuseFlow Music Player! We hope you enjoy using it as much as we enjoyed developing it. Happy listening!
