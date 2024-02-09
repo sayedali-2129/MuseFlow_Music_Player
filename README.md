@@ -22,8 +22,8 @@ To get started with MuseFlow, follow these steps:
 ## Screenshots
 
 
-![Screenshot_1707499232](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/dd2ff4a1-a325-4633-ae20-7f8d704f29db)
-src=" width="150" height="250" />
+
+src="![Screenshot_1707499232](https://github.com/sayedali-2129/MuseFlow_Music_Player/assets/144669457/dd2ff4a1-a325-4633-ae20-7f8d704f29db) width="150" height="250" />
 
 
 Thank you for choosing MuseFlow Music Player! We hope you enjoy using it as much as we enjoyed developing it. Happy listening!
